@@ -29,7 +29,29 @@ function App() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    console.log("submitting..", name, description);
+    createImage();
+  };
+
+  const createImage = async () => {
+    console.log("Generating Image...");
+
+    // API REQUEST
+    const response = await axios({
+      // settings
+      url: `https://api-interface.huggingface.co/models/stabilityai/stable-diffusion-2`,
+      method: "POST",
+      headers: {
+        // API KEY
+        Authorization: `Bearer ${process.env.REACT_APP_HUGGING_FACE_API_KEY}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        inputs: description,
+        options: { wait_for_model: true },
+      }),
+      responseType: "arraybuffer",
+    });
   };
 
   useEffect(() => {
