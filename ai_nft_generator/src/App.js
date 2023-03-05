@@ -34,9 +34,18 @@ function App() {
         <form>
           <input type="text" placeholder="Create a name..."></input>
           <input type="text" placeholder="Create a description..."></input>
-          <input type="submit" value="Create & Mint"></input>
+          <input type="submit" value="Create / Mint"></input>
         </form>
+        <div className="image">
+          <img src="" alt="AI Generated Image" />
+        </div>
       </div>
+      <p>
+        View&nbsp;
+        <a href="" target="_blank" rel="noreferrer">
+          Metadata
+        </a>
+      </p>
     </div>
   );
 }
