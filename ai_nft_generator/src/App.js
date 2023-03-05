@@ -32,9 +32,9 @@ function App() {
       <Navigation account={account} setAccount={setAccount} />
       <div className="form">
         <form>
-          <input type="text"></input>
-          <input type="text"></input>
-          <input type="submit"></input>
+          <input type="text" placeholder="Create a name..."></input>
+          <input type="text" placeholder="Create a description..."></input>
+          <input type="submit" value="Create & Mint"></input>
         </form>
       </div>
     </div>
