@@ -18,9 +18,18 @@ function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
 
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
   const loadBlockchainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    console.log("submitting..", name, description);
   };
 
   useEffect(() => {
@@ -31,10 +40,26 @@ function App() {
     <div>
       <Navigation account={account} setAccount={setAccount} />
       <div className="form">
-        <form>
-          <input type="text" placeholder="Create a name..."></input>
-          <input type="text" placeholder="Create a description..."></input>
-          <input type="submit" value="Create / Mint"></input>
+        <form onSubmit={submitHandler}>
+          <input
+            type="text"
+            placeholder="Create a name..."
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          ></input>
+          <input
+            type="text"
+            placeholder="Create a description..."
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
+          ></input>
+          <input
+            type="submit"
+            value="Create / Mint"
+            onChange={(e) => {}}
+          ></input>
         </form>
         <div className="image">
           <img src="" alt="AI Generated Image" />
