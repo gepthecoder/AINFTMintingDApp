@@ -20,6 +20,7 @@ function App() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [AImage, setAImage] = useState(null);
 
   const loadBlockchainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -29,29 +30,46 @@ function App() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    createImage();
+    // API - image based on description
+    const imageData = await createImage();
+
+    console.log("Image Generated...");
   };
 
   const createImage = async () => {
     console.log("Generating Image...");
+    const data = null;
+    try {
+      // API REQUEST
+      const URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2`;
 
-    // API REQUEST
-    const response = await axios({
-      // settings
-      url: `https://api-interface.huggingface.co/models/stabilityai/stable-diffusion-2`,
-      method: "POST",
-      headers: {
-        // API KEY
-        Authorization: `Bearer ${process.env.REACT_APP_HUGGING_FACE_API_KEY}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        inputs: description,
-        options: { wait_for_model: true },
-      }),
-      responseType: "arraybuffer",
-    });
+      const response = await axios({
+        url: URL,
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_HUGGING_FACE_API_KEY}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify({
+          inputs: description,
+          options: { wait_for_model: true },
+        }),
+        responseType: "arraybuffer",
+      });
+
+      const type = response.headers["content-type"];
+      data = response.data;
+
+      // Data From Buffer
+      const base64data = Buffer.from(data).toString("base64");
+      // Rendering On Page
+      const image = `data:${type};base64, ` + base64data;
+      setAImage(image);
+    } catch (error) {
+      console.log(error);
+    }
+    return data;
   };
 
   useEffect(() => {
@@ -84,7 +102,7 @@ function App() {
           ></input>
         </form>
         <div className="image">
-          <img src="" alt="AI Generated Image" />
+          <img src={AImage} alt="AI Generated Image" />
         </div>
       </div>
       <p>
